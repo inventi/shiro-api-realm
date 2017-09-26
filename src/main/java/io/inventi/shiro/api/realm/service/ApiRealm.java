@@ -40,11 +40,7 @@ public class ApiRealm extends AuthorizingRealm {
     }
 
     private SimpleAccount getUser(AuthInfo authInfo) {
-        return toAccount(authInfo, getName());
-    }
-
-    private SimpleAccount toAccount(AuthInfo authInfo, String realmName) {
-        SimpleAccount account = new SimpleAccount(authInfo, null, realmName);
+        SimpleAccount account = new SimpleAccount(authInfo, null, getName());
         account.addStringPermissions(service.getUser(authInfo.userId).permissions);
         return account;
     }
@@ -54,6 +50,5 @@ public class ApiRealm extends AuthorizingRealm {
         account.addObjectPermission(new WildcardPermission("*"));
         return account;
     }
-
 
 }
