@@ -4,7 +4,7 @@ Apache shiro api realm intended to be used within preauthenticated microservices
 
 **Usage**
     
-  * **Configuration**
+  * **Configuration Properties**
     * ```cache.ttl-minutes (user cache ttl in minutes)```
     * ```users.endpoint (user api response)```
   * **Spring Configuration**
