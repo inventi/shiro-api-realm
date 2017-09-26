@@ -6,7 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.web.client.RestClientException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -26,35 +27,37 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    public Optional<User> findUser(String userId) {
-        Optional<User> user = getUser(userId);
-        if (user.isPresent()) {
-            return user;
-        }
-        return createUser(userId);
+    public User getUser(String userId) {
+        return findUser(userId).orElseGet(() -> createUser(userId).get());
     }
 
     @Cacheable(value = "userCache", key = "#userId")
-    public Optional<User> getUser(String userId) {
+    public Optional<User> findUser(String userId) throws HttpClientErrorException {
         try {
             return Optional.of(userApiTemplate.getForObject("/v1/users/{userId}",
                     User.class,
                     userId));
-        } catch (RestClientException ex) {
+        } catch (HttpClientErrorException ex) {
             logger.debug("Unable to find User with id of {}", userId);
+            if (ex.getStatusCode() == HttpStatus.NOT_FOUND) {
+                return Optional.empty();
+            }
+            throw ex;
         }
-        return Optional.empty();
     }
 
     @CacheEvict(value = "userCache", key = "#userId")
-    public Optional<User> createUser(String userId) {
+    public Optional<User> createUser(String userId) throws HttpClientErrorException {
         try {
             return Optional.of(userApiTemplate.postForObject("/v1/users/",
                     createUserRequest(userId),
                     User.class));
-        } catch (RestClientException ex) {
+        } catch (HttpClientErrorException ex) {
             logger.debug("Unable to create User with id of {}, ex {}", userId, ex);
-            return getUser(userId);
+            if (ex.getStatusCode() == HttpStatus.CONFLICT) {
+                return findUser(userId);
+            }
+            throw ex;
         }
 
     }
