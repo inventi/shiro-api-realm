@@ -45,7 +45,7 @@ public class ApiRealm extends AuthorizingRealm {
 
     private SimpleAccount toAccount(AuthInfo authInfo, String realmName) {
         SimpleAccount account = new SimpleAccount(authInfo, null, realmName);
-        service.findUser(authInfo.userId).ifPresent(user -> account.addStringPermissions(user.permissions));
+        account.addStringPermissions(service.getUser(authInfo.userId).permissions);
         return account;
     }
 
