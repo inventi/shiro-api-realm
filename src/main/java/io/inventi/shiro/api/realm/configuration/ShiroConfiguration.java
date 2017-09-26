@@ -5,6 +5,7 @@ import io.inventi.shiro.api.realm.service.AuthorizationExceptionHandler;
 import io.inventi.shiro.api.realm.service.ApiRealm;
 import io.inventi.shiro.api.realm.service.PreAuthFilter;
 import io.inventi.shiro.api.realm.service.UserService;
+import io.inventi.shiro.api.realm.service.UserServiceImpl;
 import org.apache.shiro.authc.credential.AllowAllCredentialsMatcher;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.realm.Realm;
@@ -33,7 +34,7 @@ public class ShiroConfiguration {
 
     @Bean
     public UserService userService() {
-        return new UserService(rootEndpoint, new RestTemplateBuilder());
+        return new UserServiceImpl(rootEndpoint, new RestTemplateBuilder());
     }
 
     @Bean
