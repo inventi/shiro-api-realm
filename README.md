@@ -8,7 +8,7 @@ Apache shiro api realm intended to be used within preauthenticated microservices
     * ```cache.ttl-minutes (user cache ttl in minutes)```
     * ```users.endpoint (user api endpoint)```
   * **Spring Configuration**
-    * ```Import EnableShiroApiRealm annotation```
+    * ```Add EnableShiroApiRealm annotation```
   * **Authorization configuration**
     * ```Use Apache Shiro @RequiresPermissions```
   
