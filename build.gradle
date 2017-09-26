@@ -34,8 +34,6 @@ repositories {
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
-    compile "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
-    compile "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
     compile "org.springframework.boot:spring-boot-starter-cache:${springBootVersion}"
     compile "com.fasterxml.jackson.core:jackson-core:2.8.8"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.8"
@@ -51,6 +49,7 @@ dependencies {
 bintray {
     user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
     key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    override = true
     publications = ['RealmPublication']
     pkg {
         repo = 'inventi-shiro'
