@@ -26,18 +26,24 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         Method method = getHandlerMethod(handler);
         if (requestMadeByUser(request) && auditRequest(method)) {
-            producer.send(new AuditEvent(createUser(request), createAction(request, response)));
+            producer.send(new AuditEvent(createUser(request), createAction(method, request, response)));
         }
     }
 
-    private AuditEvent.Action createAction(HttpServletRequest request, HttpServletResponse response) {
-        String serverAddress = String.format("%s:%s", request.getServerName(), request.getServerPort());
-        return new AuditEvent.Action(
-                serverAddress,
-                request.getRequestURI(),
-                request.getQueryString(),
-                request.getMethod(),
-                response.getStatus());
+    private AuditEvent.Action createAction(Method method, HttpServletRequest request, HttpServletResponse response) {
+        AuditEvent.Action action = new AuditEvent.Action();
+        action.name = capitalize(method.getName());
+        action.server= String.format("%s:%s", request.getServerName(), request.getServerPort());
+        action.uri = request.getRequestURI();
+        action.query = request.getQueryString();
+        action.method = request.getMethod();
+        action.status = response.getStatus();
+
+        return action;
+    }
+
+    private String capitalize(String name) {
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
     private AuditEvent.User createUser(HttpServletRequest request) {
