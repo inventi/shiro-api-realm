@@ -29,12 +29,14 @@ public class AuditEvent {
     }
 
     public static class Action {
+        public String server;
         public String uri;
         public String query;
         public String method;
         public int status;
 
-        public Action(String uri, String query, String method, int status) {
+        public Action(String server, String uri, String query, String method, int status) {
+            this.server = server;
             this.uri = uri;
             this.query = query;
             this.method = method;

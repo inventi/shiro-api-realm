@@ -31,7 +31,9 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
     }
 
     private AuditEvent.Action createAction(HttpServletRequest request, HttpServletResponse response) {
+        String serverAddress = String.format("%s:%s", request.getServerName(), request.getServerPort());
         return new AuditEvent.Action(
+                serverAddress,
                 request.getRequestURI(),
                 request.getQueryString(),
                 request.getMethod(),
