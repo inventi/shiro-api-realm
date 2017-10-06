@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class PreAuthFilter extends AuthenticatingFilter {
 
-    private static final String USERNAME_HEADER = "x-credential-username";
+    public static final String USERNAME_HEADER = "x-credential-username";
     private static final String NO_AUTH_USERNAME = "no-auth";
 
     private String getUsernameHeader(ServletRequest request) {
