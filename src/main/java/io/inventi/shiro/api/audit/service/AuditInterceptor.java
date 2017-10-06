@@ -31,7 +31,11 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
     }
 
     private AuditEvent.Action createAction(HttpServletRequest request, HttpServletResponse response) {
-        return new AuditEvent.Action(request.getRequestURI(), request.getMethod(), response.getStatus());
+        return new AuditEvent.Action(
+                request.getRequestURI(),
+                request.getQueryString(),
+                request.getMethod(),
+                response.getStatus());
     }
 
     private AuditEvent.User createUser(HttpServletRequest request) {
