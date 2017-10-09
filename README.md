@@ -25,7 +25,10 @@ Apache shiro api realm intended to be used within preauthenticated microservices
         "location": "192.133.122.222" (location is set from `X-Forwarded-For` header)
       },
       "action": {
+        "name": "MethodName",
+        "server": "server:8080",
         "uri": "/v1/data",
+        "query: "from=122&to=344"
         "method": "GET",
         "status": 200
       }
