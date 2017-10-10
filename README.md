@@ -42,4 +42,3 @@ Apache shiro api realm intended to be used within preauthenticated microservices
     * ```add @EnableAudit annotation``` 
  
  For endpoint to generate audit information request needs to contain  header `x-credential-username`
- and method must be annotated with `@RequiresPermissions` or `@AuditAction`
