@@ -1,6 +1,5 @@
 package io.inventi.shiro.api.audit
 
-import io.inventi.shiro.api.audit.configuration.AuditAction
 import io.inventi.shiro.api.audit.domain.AuditEvent
 import io.inventi.shiro.api.audit.service.AuditEventProducer
 import io.inventi.shiro.api.audit.service.AuditInterceptor
@@ -28,40 +27,27 @@ class AuditInterceptorTest {
     @Test
     void "does not audit when request does not have credentials header"() {
         when(request.getHeader("x-credential-username")).thenReturn(null)
-        when(handlerMethod.getMethod()).thenReturn(this.getClass().getMethod("auditMethod"))
 
-        interceptor.postHandle(request, mock(HttpServletResponse), handlerMethod, null)
-
-        verify(producer, never()).send(any(AuditEvent))
-    }
-
-    @Test
-    void "does not audit when method does not have correct annotation"() {
-        when(request.getHeader("x-credential-username")).thenReturn("John")
-        when(handlerMethod.getMethod()).thenReturn(this.getClass().getMethod("regularMethod"))
-
-        interceptor.postHandle(request, mock(HttpServletResponse), handlerMethod, null)
+        interceptor.afterCompletion(request, mock(HttpServletResponse), handlerMethod, null)
 
         verify(producer, never()).send(any(AuditEvent))
     }
 
+
     @Test
-    void "audits method when request has userName and method annotated with correct annotation"() {
+    void "audits method when request made by user"() {
         when(request.getHeader("x-credential-username")).thenReturn("John")
         when(securityUtils.getAuthInfo()).thenReturn(new AuthInfo("John", true))
         when(handlerMethod.getMethod()).thenReturn(this.getClass().getMethod("auditMethod"))
 
-        interceptor.postHandle(request, mock(HttpServletResponse), handlerMethod, null)
+        interceptor.afterCompletion(request, mock(HttpServletResponse), handlerMethod, null)
 
         verify(producer).send(any(AuditEvent))
     }
 
-    @AuditAction
+
     def auditMethod() {
 
     }
 
-    def regularMethod() {
-
-    }
 }

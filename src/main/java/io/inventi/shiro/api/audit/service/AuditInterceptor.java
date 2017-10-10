@@ -1,12 +1,9 @@
 package io.inventi.shiro.api.audit.service;
 
-import io.inventi.shiro.api.audit.configuration.AuditAction;
 import io.inventi.shiro.api.audit.domain.AuditEvent;
 import io.inventi.shiro.api.realm.domain.AuthInfo;
 import io.inventi.shiro.api.realm.service.PreAuthFilter;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +20,10 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
         this.securityUtils = securityUtils;
     }
 
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         Method method = getHandlerMethod(handler);
-        if (requestMadeByUser(request) && auditRequest(method)) {
+        if (requestMadeByUser(request)) {
             producer.send(new AuditEvent(createUser(request), createAction(method, request, response)));
         }
     }
@@ -56,10 +54,6 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
 
     private boolean requestMadeByUser(HttpServletRequest request) {
         return request.getHeader(PreAuthFilter.USERNAME_HEADER) != null;
-    }
-
-    private boolean auditRequest(Method method) {
-        return method.isAnnotationPresent(RequiresPermissions.class) || method.isAnnotationPresent(AuditAction.class);
     }
 
     private Method getHandlerMethod(Object handler) {
