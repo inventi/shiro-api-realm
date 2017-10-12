@@ -35,13 +35,13 @@ repositories {
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
     compile "org.springframework.boot:spring-boot-starter-cache:${springBootVersion}"
+    compile 'org.springframework.kafka:spring-kafka:1.2.1.RELEASE'
     compile "com.fasterxml.jackson.core:jackson-core:2.8.8"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.8"
     compile "org.apache.shiro:shiro-spring-boot-web-starter:1.4.0"
     compile "org.ehcache:ehcache:3.3.1"
     compile "javax.cache:cache-api:1.0.0"
     compile "net.logstash.logback:logstash-logback-encoder:4.11"
-    compile "org.apache.kafka:kafka-clients:0.11.0.1"
 
     testCompile "org.codehaus.groovy:groovy:2.4.7"
     testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"

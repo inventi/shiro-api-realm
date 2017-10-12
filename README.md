@@ -37,7 +37,7 @@ Apache shiro api realm intended to be used within preauthenticated microservices
   
   * **Configuration Properties**
     * ```audit.event-topic (kafka topic where to publish events)```
-    * ```audit.kafka-bootstrap-servers```
+    * ```spring.kafka.bootstrap-servers```
   * **Spring configuration**
     * ```add @EnableAudit annotation``` 
  
