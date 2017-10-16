@@ -13,8 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class PreAuthFilter extends AuthenticatingFilter {
 
-    public static final String USERNAME_HEADER = "x-credential-username";
-    private static final String NO_AUTH_USERNAME = "no-auth";
+    public static final String USERNAME_HEADER = "X-Authenticated-Userid";
 
     private String getUsernameHeader(ServletRequest request) {
         HttpServletRequest httpRequest = WebUtils.toHttp(request);
@@ -32,7 +31,7 @@ public class PreAuthFilter extends AuthenticatingFilter {
         if (isPreAuthRequest(request)) {
             token = createToken(request, response);
         } else {
-            token = new UserToken(NO_AUTH_USERNAME, false);
+            token = new UserToken("", false);
         }
         try {
             Subject subject = getSubject(request, response);
