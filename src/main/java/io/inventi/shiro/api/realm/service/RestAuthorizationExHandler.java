@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class AuthorizationExceptionHandler {
+public class RestAuthorizationExHandler {
 
     @ExceptionHandler(AuthorizationException.class)
     public ResponseEntity<String> authorizationErrorHandler(AuthorizationException e) throws Exception {

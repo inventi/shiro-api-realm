@@ -1,7 +1,6 @@
 package io.inventi.shiro.api.realm.configuration;
 
 import io.inventi.shiro.api.realm.domain.UserToken;
-import io.inventi.shiro.api.realm.service.AuthorizationExceptionHandler;
 import io.inventi.shiro.api.realm.service.ApiRealm;
 import io.inventi.shiro.api.realm.service.PreAuthFilter;
 import io.inventi.shiro.api.realm.service.UserService;
@@ -92,8 +91,4 @@ public class ShiroConfiguration {
         return subjectDAO;
     }
 
-    @Bean
-    public AuthorizationExceptionHandler authorizationExceptionHandler() {
-        return new AuthorizationExceptionHandler();
-    }
 }
