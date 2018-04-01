@@ -53,8 +53,9 @@ bintray {
     override = true
     publications = ['RealmPublication']
     pkg {
-        repo = 'inventi-shiro'
+        repo = 'repo'
         name = 'shiro-api-realm'
+        userOrg = 'inventi'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/inventiLT/shiro-api-realm.git'
         version {
