@@ -4,73 +4,56 @@ buildscript {
     }
     repositories {
         mavenCentral()
-        jcenter()
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
     }
 }
-
-apply plugin: 'groovy'
-apply plugin: 'com.jfrog.bintray'
 
 group 'io.inventi'
 version = '1.2'
 
 allprojects {
-    repositories {
-        jcenter()
-    }
-    apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'java'
+    apply plugin: 'groovy'
 }
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
-    compile "org.springframework.boot:spring-boot-starter-cache:${springBootVersion}"
-    compile 'org.springframework.kafka:spring-kafka:1.2.1.RELEASE'
-    compile "com.fasterxml.jackson.core:jackson-core:2.8.8"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.8"
-    compile "org.apache.shiro:shiro-spring-boot-web-starter:1.4.0"
-    compile "org.ehcache:ehcache:3.3.1"
-    compile "javax.cache:cache-api:1.0.0"
-    compile "net.logstash.logback:logstash-logback-encoder:4.11"
+    implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    implementation "org.springframework.boot:spring-boot-starter-cache:${springBootVersion}"
+    implementation 'org.springframework.kafka:spring-kafka:1.2.1.RELEASE'
+    implementation "com.fasterxml.jackson.core:jackson-core:2.8.8"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.8"
+    implementation "org.apache.shiro:shiro-spring-boot-web-starter:1.4.0"
+    implementation "org.ehcache:ehcache:3.3.1"
+    implementation "javax.cache:cache-api:1.0.0"
+    implementation "net.logstash.logback:logstash-logback-encoder:4.11"
 
-    testCompile "org.codehaus.groovy:groovy:2.4.7"
-    testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-}
-
-bintray {
-    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-    override = true
-    publications = ['RealmPublication']
-    pkg {
-        repo = 'repo'
-        name = 'shiro-api-realm'
-        userOrg = 'inventi'
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/inventiLT/shiro-api-realm.git'
-        version {
-            vcsTag = '1.2'
-        }
-    }
+    testImplementation "org.codehaus.groovy:groovy:2.4.7"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 }
 
 publishing {
     publications {
         RealmPublication(MavenPublication) {
             from components.java
-            groupId 'io.inventi'
-            artifactId 'shiro-api-realm'
+            groupId = 'io.inventi'
+            artifactId = 'shiro-api-realm'
             version '1.2'
         }
     }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
 }

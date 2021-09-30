@@ -1,0 +1,2 @@
+install:
+- ./gradlew build -PauthToken=$TOKEN publishToMavenLocal -x build -x publishToMavenLocal -x test

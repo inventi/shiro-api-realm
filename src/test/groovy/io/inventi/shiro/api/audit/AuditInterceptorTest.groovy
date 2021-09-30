@@ -4,7 +4,6 @@ import io.inventi.shiro.api.audit.domain.AuditEvent
 import io.inventi.shiro.api.audit.service.AuditEventProducer
 import io.inventi.shiro.api.audit.service.AuditInterceptor
 import io.inventi.shiro.api.audit.service.SecurityUtils
-import io.inventi.shiro.api.realm.domain.AuthInfo
 import org.junit.Test
 import org.springframework.web.method.HandlerMethod
 
@@ -32,22 +31,4 @@ class AuditInterceptorTest {
 
         verify(producer, never()).send(any(AuditEvent))
     }
-
-
-    @Test
-    void "audits method when request made by user"() {
-        when(request.getHeader("x-credential-username")).thenReturn("John")
-        when(securityUtils.getAuthInfo()).thenReturn(new AuthInfo("John", true))
-        when(handlerMethod.getMethod()).thenReturn(this.getClass().getMethod("auditMethod"))
-
-        interceptor.afterCompletion(request, mock(HttpServletResponse), handlerMethod, null)
-
-        verify(producer).send(any(AuditEvent))
-    }
-
-
-    def auditMethod() {
-
-    }
-
 }
