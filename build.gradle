@@ -22,7 +22,7 @@ allprojects {
     repositories {
         jcenter()
     }
-    apply plugin: 'maven'
+//    apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'java'
 }
@@ -47,30 +47,30 @@ dependencies {
     testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 }
 
-bintray {
-    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-    override = true
-    publications = ['RealmPublication']
-    pkg {
-        repo = 'repo'
-        name = 'shiro-api-realm'
-        userOrg = 'inventi'
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/inventiLT/shiro-api-realm.git'
-        version {
-            vcsTag = '1.2'
-        }
-    }
-}
-
-publishing {
-    publications {
-        RealmPublication(MavenPublication) {
-            from components.java
-            groupId 'io.inventi'
-            artifactId 'shiro-api-realm'
-            version '1.2'
-        }
-    }
-}
+//bintray {
+//    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+//    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+//    override = true
+//    publications = ['RealmPublication']
+//    pkg {
+//        repo = 'repo'
+//        name = 'shiro-api-realm'
+//        userOrg = 'inventi'
+//        licenses = ['Apache-2.0']
+//        vcsUrl = 'https://github.com/inventiLT/shiro-api-realm.git'
+//        version {
+//            vcsTag = '1.2'
+//        }
+//    }
+//}
+//
+//publishing {
+//    publications {
+//        RealmPublication(MavenPublication) {
+//            from components.java
+//            groupId 'io.inventi'
+//            artifactId 'shiro-api-realm'
+//            version '1.2'
+//        }
+//    }
+//}
